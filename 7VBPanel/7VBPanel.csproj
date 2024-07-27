@@ -254,6 +254,11 @@
     <Compile Include="Instances\CS2Instance.cs" />
     <Compile Include="Instances\SteamInstance.cs" />
     <Compile Include="Managers\AccountManager.cs" />
+    <Compile Include="Resources\Files.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Files.resx</DependentUpon>
+    </Compile>
     <Compile Include="Structures\VideoAdapter.cs" />
     <Compile Include="Utils\CS2Optimizer.cs" />
     <Compile Include="Utils\HardwareUtils.cs" />
@@ -337,12 +342,17 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Files.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Files.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\Files\CSFiles.zip" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

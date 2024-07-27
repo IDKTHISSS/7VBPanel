@@ -17,7 +17,7 @@ namespace _7VBPanel.Managers
     {
         public static List<AccountInstance> AccountList = new List<AccountInstance>();
 
-       
+        private static string logpassPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logpass.txt");
         public static List<AccountInstance> GetRandomAccounts(int count)
         {
             Random random = new Random();
@@ -35,11 +35,17 @@ namespace _7VBPanel.Managers
 
             return result;
         }
+        
         public static void LoadAccounts()
         {
-            if (!File.Exists("logpass.txt"))
+            if (!File.Exists(logpassPath))
             {
-                MessageBox.Show("logpass.txt NotFound.");
+                File.WriteAllText(logpassPath, "Login:Password\n");
+                if(!Directory.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MaFiles")))
+                {
+                    Directory.CreateDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MaFiles"));
+                }
+                MessageBox.Show("Please add accounts");
                 return;
             }
             using (StreamReader reader = new StreamReader("logpass.txt"))

@@ -10,6 +10,8 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using _7VBPanel.Utils;
 using System.Text.RegularExpressions;
+using System.IO.Compression;
+using _7VBPanel.Resources;
 
 namespace _7VBPanel.Managers
 {
@@ -39,6 +41,10 @@ namespace _7VBPanel.Managers
                     settings[property.Name] = JToken.FromObject(value);
                 }
                 string json = settings.ToString(Formatting.Indented);
+                if(!Directory.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings"))){
+                    Directory.CreateDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings"));
+                    UnpackCSFiles();
+                }
                 File.WriteAllText(settingsFilePath, json);
             }
             catch (Exception ex)
@@ -46,7 +52,17 @@ namespace _7VBPanel.Managers
                 Console.WriteLine($"Ошибка при сохранении настроек: {ex.Message}");
             }
         }
-
+        private static void UnpackCSFiles()
+        {
+            byte[] zipBytes = (byte[])Files.CSFiles;
+            using (MemoryStream zipStream = new MemoryStream(zipBytes))
+            {
+                using (ZipArchive archive = new ZipArchive(zipStream))
+                {
+                    archive.ExtractToDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings"));
+                }
+            }
+        }
         public static void LoadSettings()
         {
             try
@@ -89,6 +105,7 @@ namespace _7VBPanel.Managers
                     property.SetValue(null, defaultValue);
                 }
             }
+            SaveSettings();
         }
 
 
@@ -108,10 +125,6 @@ namespace _7VBPanel.Managers
         public static string GetMachineConvarsFileSettings()
         {
             string[] lines = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings", "cs2_machine_convars.vcfg"));
-/*            string _2vs2mapPatern = @"""player_competitive_maplist_2v2_10_0_12FCB095""\s*""[^""]*""";
-            string _5vs5mapPatern = @"""player_competitive_maplist_8_10_0_DE80D4BB""\s*""[^""]*""";
-            string updatedConfig = Regex.Replace(string.Join(Environment.NewLine, lines), _2vs2mapPatern, $@"""player_competitive_maplist_2v2_10_0_12FCB095""    ""{SelectedMap2vs2}""");
-            updatedConfig = Regex.Replace(updatedConfig, _5vs5mapPatern, $@"""player_competitive_maplist_8_10_0_DE80D4BB""    ""{SelectedMap5vs5}""");*/
             return string.Join(Environment.NewLine, lines);
         }
         public static string GetAutoExecFileSettings()
