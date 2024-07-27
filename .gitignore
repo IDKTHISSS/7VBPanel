@@ -95,8 +95,6 @@ upgradeLog*.XML
 *.siteconfig
 
 # Файлы ресурсов
-*.resx
-*.Designer.cs
 *.settings
 
 # Исключаем папку Libs из игнорирования, чтобы включить все DLL файлы
