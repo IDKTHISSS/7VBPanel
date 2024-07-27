@@ -23,13 +23,19 @@ using _7VBPanel.UI.Elements;
 using System.Threading;
 using _7VBPanel.Instances;
 using System.Security.Principal;
+using FlaUI.Core;
+using FlaUI.Core.AutomationElements;
+using FlaUI.UIA3;
+
+using System.Runtime.InteropServices;
+using FlaUI.Core.Conditions;
 
 namespace _7VBPanel
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : System.Windows.Window
     {
         public ObservableCollection<string> VideoAdapters { get; set; }
 
@@ -263,6 +269,20 @@ namespace _7VBPanel
             ProcessesUtils.KillAllSteamAndCS();
         }
 
+        static void PrintElements(AutomationElement element, string indent = "")
+        {
+            // Вывести текущий элемент и его основные свойства
+            Console.WriteLine($"{indent}: {element.Name}, {element.ControlType}");
+
+            // Рекурсивно вывести все дочерние элементы
+            foreach (var child in element.FindAllChildren())
+            {
+                PrintElements(child, indent + "  ");
+            }
+
+            // Вывести текстовые элементы, если они существуют
+            
+        }
         private void ButtonWIthTextOnly_ButtonClick_3(object sender, RoutedEventArgs e)
         {
             List<AccountInstance> Accounts = AccountManager.GetSelectedAccounts(AccountListBox);
@@ -274,7 +294,7 @@ namespace _7VBPanel
                 }
             }).Start();
         }
-
+        
         private void ButtonWIthTextOnly_Loaded(object sender, RoutedEventArgs e)
         {
 

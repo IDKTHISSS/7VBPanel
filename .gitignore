@@ -89,6 +89,7 @@ upgradeLog*.XML
 *.appx
 *.appxsym
 *.appxupload
+*.py
 
 # Конфигурационные файлы
 *.appconfig
