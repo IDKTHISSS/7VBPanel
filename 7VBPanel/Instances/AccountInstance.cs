@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using SteamAuth;
 using System.Threading.Tasks;
+using _7VBPanel.Utils;
 
 namespace _7VBPanel.Instances
 {
@@ -18,7 +19,6 @@ namespace _7VBPanel.Instances
         NotStarted,
         Starting,
         WaitCS2,
-        Loaded,
         InMainMenu,
         InLoading,
         InGame
@@ -62,6 +62,7 @@ namespace _7VBPanel.Instances
                 }
                 Thread.Sleep(500);
             }
+            ProcessesUtils.WaitForLoadCS2(CS2Process.Id);
             CS2Client.CS2Process = CS2Process;
             while(CS2Process.MainWindowHandle == IntPtr.Zero)
             {

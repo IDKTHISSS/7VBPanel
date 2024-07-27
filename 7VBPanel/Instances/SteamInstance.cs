@@ -50,11 +50,8 @@ namespace _7VBPanel.Instances
                 accountInstance.FindCS2();
                 accountInstance.CS2Client.ConsoleCompnent.Setup(accountInstance);
                 accountInstance.CS2Client.ConsoleCompnent.StartReadingConsole();
-                while (accountInstance.AccountStatus != EAccountStatus.InMainMenu)
-                {
-                    Thread.Sleep(1000);
-                }
-                accountInstance.CS2Client.CS2_WindowComponent.ChangeWindowTitle(accountInstance.Login);
+                accountInstance.CS2Client.CS2_WindowComponent.ChangeWindowTitle("[7VB] " + accountInstance.Login);
+                accountInstance.AccountStatus = EAccountStatus.InMainMenu;
                 accountInstance.SetAccountColor(Brushes.Green);
 
             }).Start();

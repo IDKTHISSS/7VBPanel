@@ -57,18 +57,6 @@ namespace _7VBPanel.Components
                     StreamReader streamReader = new StreamReader(stream);
                     text = streamReader.ReadToEnd();
                 }
-                if (accountInstance.AccountStatus == EAccountStatus.WaitCS2 && text.Contains("Scratch RT Allocations:"))
-                {
-                    accountInstance.SetAccountColor(Brushes.Green);
-                    accountInstance.AccountStatus = EAccountStatus.Loaded;
-                   
-                    ClearCMDFile();
-                }
-                if (accountInstance.AccountStatus == EAccountStatus.Loaded && text.Contains("connected"))
-                {
-                    accountInstance.AccountStatus = EAccountStatus.InMainMenu;
-                    flag = true;
-                }
                 if (text.Contains("CSGO_GAME_UI_STATE_INGAME -> CSGO_GAME_UI_STATE_MAINMENU"))
                 {
                     accountInstance.AccountStatus = EAccountStatus.InMainMenu;
