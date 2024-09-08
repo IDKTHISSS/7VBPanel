@@ -48,7 +48,7 @@ namespace _7VBPanel.Managers
                 MessageBox.Show("Please add accounts");
                 return;
             }
-            using (StreamReader reader = new StreamReader("logpass.txt"))
+            using (StreamReader reader = new StreamReader(logpassPath))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)

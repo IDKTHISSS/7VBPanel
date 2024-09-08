@@ -38,6 +38,7 @@ namespace _7VBPanel.Instances
             SteamProcess.Exited += delegate
             {
                 accountInstance.SetAccountColor(Brushes.White);
+                accountInstance.AccountStatus = EAccountStatus.NotStarted;
             };
             SteamProcess.EnableRaisingEvents = true;
             SteamProcess.Start();

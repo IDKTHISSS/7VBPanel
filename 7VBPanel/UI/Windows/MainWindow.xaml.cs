@@ -47,9 +47,12 @@ namespace _7VBPanel
         {
             InitializeComponent();
 
+
+            HardwareUtils.LoadVideoAdapters();
+
             SettingsManager.LoadSettings();
             AccountManager.LoadAccounts();
-            HardwareUtils.LoadVideoAdapters();
+           
            
         }
 
@@ -79,6 +82,8 @@ namespace _7VBPanel
             bool IsCS2Folder = FileExistsIgnoreCase(cs2Path, "cs2.exe");
             CS2PathBtn.ButtonCircleColor = IsCS2Folder ? Brushes.Green : Brushes.Red;
 
+           
+            
             foreach (var account in AccountManager.AccountList)
             {
                 AddItem(account.Login, account.Color);
@@ -266,6 +271,7 @@ namespace _7VBPanel
         }
         private void ButtonWIthTextOnly_ButtonClick_3(object sender, RoutedEventArgs e)
         {
+            
             List<AccountInstance> Accounts = AccountManager.GetSelectedAccounts(AccountListBox);
 
             new Thread(() => {

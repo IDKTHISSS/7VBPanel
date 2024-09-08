@@ -17,7 +17,7 @@ Title="7VP Panel" Height="480" Width="800" MouseDown="Window_MouseDown" Loaded="
             <Border  Cursor="Hand" HorizontalAlignment="Left" Background="Transparent" Height="10" Margin="751,17,0,0" VerticalAlignment="Top" MouseLeftButtonDown="Border_MouseLeftButtonDown">
                 <Image x:Name="MinimazeButton"  Width="10"  Margin="0,7,0,0" Source="/UI/Icons/Minimize Icon.png"/>
             </Border>
-            <Grid Margin="24,53,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Height="400">
+            <Grid Margin="483,53,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="250" Height="400">
                 <Border CornerRadius="4" BorderThickness="1" BorderBrush="#B8B8B8" />
                 <ListBox x:Name="AccountListBox" Background="Transparent" Margin="0,5,0,0" BorderThickness="0" >
                     <ListBox.ItemContainerStyle>
@@ -36,15 +36,18 @@ Title="7VP Panel" Height="480" Width="800" MouseDown="Window_MouseDown" Loaded="
                     </ListBox.ItemContainerStyle>
                 </ListBox>
             </Grid>
+            <Image HorizontalAlignment="Left" Height="48" Margin="69,50,0,0" VerticalAlignment="Top" Width="42" Source="/Resources/Icons/Logo.png"/>
+            <Label Content="ECLIPSE PANEL" FontSize="16" HorizontalAlignment="Left" Margin="116,50,0,0" VerticalAlignment="Top" Foreground="White"/>
+            <Label Content="Free Farm" FontSize="12" HorizontalAlignment="Left" Margin="116,72,0,0" VerticalAlignment="Top" Foreground="White"/>
 
-            <Elements:ButtonWIthTextOnly ButtonText="Start" HorizontalAlignment="Left" Margin="320,53,0,0" VerticalAlignment="Top" Height="37" Width="158" ButtonClick="ButtonWIthTextOnly_ButtonClick" Loaded="ButtonWIthTextOnly_Loaded"/>
-            <Elements:ButtonWIthTextOnly ButtonText="Move windows" HorizontalAlignment="Left" Margin="320,106,0,0" VerticalAlignment="Top" Height="37" Width="158" ButtonClick="ButtonWIthTextOnly_ButtonClick_1"/>
-            <Elements:TextBox x:Name="CS2ArgumentsTextBox" Placeholder="CS2 Arguments" HorizontalAlignment="Left" Margin="307,425,0,0" VerticalAlignment="Top" Width="467"/>
-            <Elements:SelectPathButton x:Name="SteamPathBtn" ButtonCircleColor="Red" ButtonText="Steam Path" HorizontalAlignment="Left" Margin="307,319,0,0" VerticalAlignment="Top" Height="30" Width="125" ButtonClick="SelectPathButton_ButtonClick"/>
-            <Elements:SelectPathButton x:Name="CS2PathBtn" ButtonCircleColor="Red" ButtonText="CS2 Path" HorizontalAlignment="Left" Margin="445,319,0,0" VerticalAlignment="Top" Height="30" Width="125" ButtonClick="SelectPathButton_ButtonClick_1"/>
-            <Elements:Selector x:Name="SelectedVideoAdapter" SelectorText="Video Adapter (Vendor and Device ID Detector)" Items="{Binding VideoAdapters, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" Width="263" Margin="307,354,0,0" Text_Changed="SelectedVideoAdapter_Text_Changed"/>
-            <Elements:ButtonWIthTextOnly ButtonText="Kill All" HorizontalAlignment="Left" Margin="598,319,0,0" VerticalAlignment="Top" Height="30" Width="176" ButtonClick="ButtonWIthTextOnly_ButtonClick_2"/>
-            <Elements:ButtonWIthTextOnly ButtonText="Kill" HorizontalAlignment="Center" Margin="0,158,0,0" VerticalAlignment="Top" Height="37" Width="158" ButtonClick="ButtonWIthTextOnly_ButtonClick_3"/>
+            <Elements:ButtonWIthTextOnly ButtonText="Start" HorizontalAlignment="Left" Margin="69,148,0,0" VerticalAlignment="Top" Height="37" Width="158" ButtonClick="ButtonWIthTextOnly_ButtonClick" Loaded="ButtonWIthTextOnly_Loaded"/>
+            <Elements:ButtonWIthTextOnly ButtonText="Move windows" HorizontalAlignment="Left" Margin="69,201,0,0" VerticalAlignment="Top" Height="37" Width="158" ButtonClick="ButtonWIthTextOnly_ButtonClick_1"/>
+            <Elements:TextBox x:Name="CS2ArgumentsTextBox" Placeholder="CS2 Arguments" HorizontalAlignment="Left" Margin="69,393,0,0" VerticalAlignment="Top" Width="349"/>
+            <Elements:SelectPathButton x:Name="SteamPathBtn" ButtonCircleColor="Red" ButtonText="Steam Path" HorizontalAlignment="Left" Margin="69,278,0,0" VerticalAlignment="Top" Height="39" Width="158" ButtonClick="SelectPathButton_ButtonClick"/>
+            <Elements:SelectPathButton x:Name="CS2PathBtn" ButtonCircleColor="Red" ButtonText="CS2 Path" HorizontalAlignment="Left" Margin="260,278,0,0" VerticalAlignment="Top" Height="39" Width="158" ButtonClick="SelectPathButton_ButtonClick_1"/>
+            <Elements:Selector x:Name="SelectedVideoAdapter" SelectorText="Video Adapter (Vendor and Device ID Detector)" Items="{Binding VideoAdapters, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" HorizontalAlignment="Left" VerticalAlignment="Top" Height="50" Width="349" Margin="69,322,0,0" Text_Changed="SelectedVideoAdapter_Text_Changed"/>
+            <Elements:ButtonWIthTextOnly ButtonText="Kill All" HorizontalAlignment="Left" Margin="260,201,0,0" VerticalAlignment="Top" Height="37" Width="158" ButtonClick="ButtonWIthTextOnly_ButtonClick_2" RenderTransformOrigin="0.501,0.252"/>
+            <Elements:ButtonWIthTextOnly ButtonText="Kill" HorizontalAlignment="Left" Margin="260,148,0,0" VerticalAlignment="Top" Height="37" Width="158" ButtonClick="ButtonWIthTextOnly_ButtonClick_3"/>
 
         </Grid>
     </Border>

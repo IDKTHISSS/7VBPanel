@@ -41,10 +41,7 @@ namespace _7VBPanel.Managers
                     settings[property.Name] = JToken.FromObject(value);
                 }
                 string json = settings.ToString(Formatting.Indented);
-                if(!Directory.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings"))){
-                    Directory.CreateDirectory(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Settings"));
-                    UnpackCSFiles();
-                }
+              
                 File.WriteAllText(settingsFilePath, json);
             }
             catch (Exception ex)
@@ -54,7 +51,7 @@ namespace _7VBPanel.Managers
         }
         private static void UnpackCSFiles()
         {
-            byte[] zipBytes = (byte[])Files.CSFiles;
+            byte[] zipBytes = Files.CSFiles;
             using (MemoryStream zipStream = new MemoryStream(zipBytes))
             {
                 using (ZipArchive archive = new ZipArchive(zipStream))

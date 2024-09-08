@@ -373,6 +373,9 @@
     <Resource Include="UI\Icons\Telegram2.png" />
     <Resource Include="UI\Icons\Users.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\Logo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Interop.UIAutomationClient.10.19041.0\build\Interop.UIAutomationClient.targets" Condition="Exists('..\packages\Interop.UIAutomationClient.10.19041.0\build\Interop.UIAutomationClient.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

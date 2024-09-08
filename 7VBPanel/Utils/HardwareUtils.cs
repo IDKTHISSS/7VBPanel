@@ -206,7 +206,7 @@ namespace _7VBPanel.Utils
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occurred: " + ex.Message);
+                Console.WriteLine("Cant be loaded video adapters.");
             }
         }
         public static void GetVendorAndDeviceID(out int VendorID, out int DeviceID)

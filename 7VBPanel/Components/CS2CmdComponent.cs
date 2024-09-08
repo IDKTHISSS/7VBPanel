@@ -50,7 +50,7 @@ namespace _7VBPanel.Components
             while (true)
             {
                 Thread.Sleep(500);
-                bool flag = false;
+                bool NeedCleanLogFile = false;
                 string text;
                 using (FileStream stream = new FileStream(SettingsManager.CS2Path + "\\game\\csgo\\" + accountInstance.Login + ".log", FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite))
                 {
@@ -60,25 +60,25 @@ namespace _7VBPanel.Components
                 if (text.Contains("CSGO_GAME_UI_STATE_INGAME -> CSGO_GAME_UI_STATE_MAINMENU"))
                 {
                     accountInstance.AccountStatus = EAccountStatus.InMainMenu;
-                    flag = true;
+                    NeedCleanLogFile = true;
                 }
                 if (text.Contains("CSGO_GAME_UI_STATE_LOADINGSCREEN -> CSGO_GAME_UI_STATE_INGAME"))
                 {
                     accountInstance.AccountStatus = EAccountStatus.InGame;
-                    flag = true;
+                    NeedCleanLogFile = true;
                 }
                 
                 if (text.Contains("CSGO_GAME_UI_STATE_MAINMENU -> CSGO_GAME_UI_STATE_LOADINGSCREEN"))
                 {
                     accountInstance.AccountStatus = EAccountStatus.InLoading;
-                    flag = true;
+                    NeedCleanLogFile = true;
                 }
                 if (text.Contains("CSGO_GAME_UI_STATE_LOADINGSCREEN -> CSGO_GAME_UI_STATE_MAINMENU"))
                 {
                     accountInstance.AccountStatus = EAccountStatus.InMainMenu;
-                    flag = true;
+                    NeedCleanLogFile = true;
                 }
-                if (flag)
+                if (NeedCleanLogFile)
                 {
                     ClearCMDFile();
                 }
