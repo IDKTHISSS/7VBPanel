@@ -18,18 +18,6 @@ namespace _7VBPanel.Components
         {
             this.CS2Window = CS2Window;
         }
-        public void SendText(string text)
-        {
-            const int WM_CHAR = 0x0102;
-            foreach (char c in text)
-            {
-                Win32.SendMessage(CS2Window, WM_CHAR, (IntPtr)c, IntPtr.Zero);
-            }
-        }
-        public void SetForeground()
-        {
-            Win32.SetForegroundWindow(CS2Window);
-        }
        
         public IntPtr GetWindowHandle()
         {

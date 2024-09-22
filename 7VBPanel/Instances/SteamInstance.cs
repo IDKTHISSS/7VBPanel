@@ -74,29 +74,6 @@ namespace _7VBPanel.Instances
 
             }
         }
-        public void UpdateCS2()
-        {
-            Win32.SetForegroundWindow(SteamProcess.MainWindowHandle);
-            UIA3Automation val = new UIA3Automation();
-            AutomationElement mainWindow = ((AutomationBase)val).FromHandle(SteamProcess.MainWindowHandle);
-
-            var libraryElement = mainWindow.FindFirstDescendant(
-            x => x.ByText("LIBRARY")).AsTextBox();
-            if (libraryElement == null) return;
-            libraryElement.Focus();
-            libraryElement.Click();
-
-            var CSElement = mainWindow.FindFirstDescendant(
-            x => x.ByText("Counter-Strike 2")).AsTextBox();
-            if (CSElement == null) return;
-            CSElement.Focus();
-            CSElement.Click();
-
-            var UpdateButton = mainWindow.FindFirstDescendant(
-            x => x.ByText("UPDATE")).AsButton();
-            if (UpdateButton == null) return;
-            UpdateButton.Invoke();
-        }
     }
 
 }

@@ -26,6 +26,10 @@ using System.Security.Principal;
 
 using System.Runtime.InteropServices;
 using FlaUI.Core.Conditions;
+using SharpDX.DXGI;
+using SharpDX;
+using FlaUI.Core.WindowsAPI;
+using HidSharp;
 
 namespace _7VBPanel
 {
@@ -47,9 +51,6 @@ namespace _7VBPanel
         {
             InitializeComponent();
 
-
-            HardwareUtils.LoadVideoAdapters();
-
             SettingsManager.LoadSettings();
             AccountManager.LoadAccounts();
            
@@ -59,22 +60,47 @@ namespace _7VBPanel
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             HardwareUtils.InitializeHardwareMonitor();
-            SelectedVideoAdapter.Items = new ObservableCollection<string>();
-            foreach (var adapter in HardwareUtils.GetVideoAdapters())
+            VendorIDTextBox.Text = SettingsManager.VendorID;
+            DeviceIDTextBox.Text = SettingsManager.DeviceID;
+            if(SettingsManager.VendorID == "0" || SettingsManager.DeviceID == "0")
             {
-                VideoAdapters.Add($"({adapter.VendorID}|{adapter.DeviceID}) {adapter.AdapterName}");
+                VendorIDTextBox.Text = "";
+                DeviceIDTextBox.Text = "";
             }
-            VideoAdapter item;
-            if (SettingsManager.SelectedGPUID == "None")
+            using (var factory = new Factory1())
             {
-                item = HardwareUtils.GetVideoAdapters()[0];
-            }
-            else
-            {
-                item = HardwareUtils.GetVideoAdapter(SettingsManager.SelectedGPUID);
-            }
-            SelectedVideoAdapter.SetText($"({item.VendorID}|{item.DeviceID}) {item.AdapterName}");
+                Adapter highPerformanceAdapter = null;
+                long maxVRAM = 0;
 
+                foreach (var adapter in factory.Adapters)
+                {
+                    var description = adapter.Description;
+
+                    long adapterVRAM = description.DedicatedVideoMemory;
+
+                    if (adapterVRAM > maxVRAM)
+                    {
+                        maxVRAM = adapterVRAM;
+                        highPerformanceAdapter = adapter;
+                    }
+
+                }
+
+                if (highPerformanceAdapter != null)
+                {
+                    var desc = highPerformanceAdapter.Description;
+                   
+                    int vendorId = desc.VendorId;
+                    int deviceId = desc.DeviceId;
+                    Console.WriteLine($"VendorID: 0x{vendorId:X4} ({vendorId})");
+                    Console.WriteLine($"DeviceID: 0x{deviceId:X4} ({deviceId})");
+                    Console.WriteLine($"Description: {desc.Description}");
+                }
+                else
+                {
+                    Console.WriteLine("High-performance GPU not found.");
+                }
+            }
             CS2ArgumentsTextBox.Text = SettingsManager.CS2Arguments;
             bool IsSteamFolder = FileExistsIgnoreCase(SettingsManager.SteamPath, "Steam.exe");
             SteamPathBtn.ButtonCircleColor = IsSteamFolder ? Brushes.Green : Brushes.Red;
@@ -176,14 +202,6 @@ namespace _7VBPanel
             }
         }
 
-        private void SelectedVideoAdapter_Text_Changed(object sender, RoutedEventArgs e)
-        {
-            Match match = Regex.Match(SelectedVideoAdapter.SelectedText, @"\((\d+)\|(\d+)\) (.+)");
-            VideoAdapter videoAdapter = HardwareUtils.GetVideoAdapter(int.Parse(match.Groups[1].Value), int.Parse(match.Groups[2].Value));
-            SettingsManager.SelectedGPUID = videoAdapter.AdapterID;
-            SettingsManager.SaveSettings();
-        }
-
         private void ButtonWIthTextOnly_ButtonClick(object sender, RoutedEventArgs e)
         {
             CS2ArgumentsTextBox.Text = SettingsManager.CS2Arguments;
@@ -238,7 +256,7 @@ namespace _7VBPanel
 
             foreach (var account in AccountManager.AccountList.Where(acc => acc.AccountStatus == Instances.EAccountStatus.InMainMenu))
             {
-                if (Win32.GetWindowRect(account.CS2Client.CS2_WindowComponent.GetWindowHandle(), out RECT rect))
+                if (Win32.GetWindowRect(account.CS2Client.CS2_WindowComponent.GetWindowHandle(), out Utils.RECT rect))
                 {
                     int windowWidth = rect.Right - rect.Left;
                     int windowHeight = rect.Bottom - rect.Top;
@@ -285,6 +303,18 @@ namespace _7VBPanel
         private void ButtonWIthTextOnly_Loaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void VendorIDTextBox_Text_Changed(object sender, RoutedEventArgs e)
+        {
+            SettingsManager.VendorID = VendorIDTextBox.Text;
+            SettingsManager.SaveSettings();
+        }
+
+        private void DeviceIDTextBox_Text_Changed(object sender, RoutedEventArgs e)
+        {
+            SettingsManager.DeviceID = DeviceIDTextBox.Text;
+            SettingsManager.SaveSettings();
         }
     }
 }
