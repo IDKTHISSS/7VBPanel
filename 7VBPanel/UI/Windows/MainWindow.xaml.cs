@@ -47,26 +47,21 @@ namespace _7VBPanel
             checkBox.TextColor = Color;
             AccountListBox.Items.Add(checkBox);
         }
+        LobbyInstance Team1;
+        LobbyInstance Team2;
         public MainWindow()
         {
             InitializeComponent();
 
             SettingsManager.LoadSettings();
             AccountManager.LoadAccounts();
-           
-           
+
+
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             HardwareUtils.InitializeHardwareMonitor();
-            VendorIDTextBox.Text = SettingsManager.VendorID;
-            DeviceIDTextBox.Text = SettingsManager.DeviceID;
-            if(SettingsManager.VendorID == "0" || SettingsManager.DeviceID == "0")
-            {
-                VendorIDTextBox.Text = "";
-                DeviceIDTextBox.Text = "";
-            }
             using (var factory = new Factory1())
             {
                 Adapter highPerformanceAdapter = null;
@@ -89,16 +84,9 @@ namespace _7VBPanel
                 if (highPerformanceAdapter != null)
                 {
                     var desc = highPerformanceAdapter.Description;
-                   
+
                     int vendorId = desc.VendorId;
                     int deviceId = desc.DeviceId;
-                    Console.WriteLine($"VendorID: 0x{vendorId:X4} ({vendorId})");
-                    Console.WriteLine($"DeviceID: 0x{deviceId:X4} ({deviceId})");
-                    Console.WriteLine($"Description: {desc.Description}");
-                }
-                else
-                {
-                    Console.WriteLine("High-performance GPU not found.");
                 }
             }
             CS2ArgumentsTextBox.Text = SettingsManager.CS2Arguments;
@@ -108,8 +96,8 @@ namespace _7VBPanel
             bool IsCS2Folder = FileExistsIgnoreCase(cs2Path, "cs2.exe");
             CS2PathBtn.ButtonCircleColor = IsCS2Folder ? Brushes.Green : Brushes.Red;
 
-           
-            
+
+
             foreach (var account in AccountManager.AccountList)
             {
                 AddItem(account.Login, account.Color);
@@ -220,16 +208,16 @@ namespace _7VBPanel
                 return;
             }
             List<AccountInstance> Accounts = AccountManager.GetSelectedAccounts(AccountListBox);
-            
+
             new Thread(() => {
                 foreach (var account in Accounts)
                 {
-                    if(account.MaFile == null)
+                    if (account.MaFile == null)
                     {
                         MessageBox.Show($"{account.Login} MaFile NotFound.");
                         continue;
                     }
-                    if(account.MaFile.Session == null)
+                    if (account.MaFile.Session == null)
                     {
                         MessageBox.Show($"{account.Login} MaFile Broken.");
                         continue;
@@ -242,7 +230,7 @@ namespace _7VBPanel
                     account.SteamClient.Start();
                 }
             }).Start();
-            
+
         }
 
         private void ButtonWIthTextOnly_ButtonClick_1(object sender, RoutedEventArgs e)
@@ -253,7 +241,29 @@ namespace _7VBPanel
             int x = 0;
             int y = 0;
             int maxHeightInRow = 0;
-
+            if (Team1 != null)
+            {
+                Team1.Leader.CS2Client.CS2_WindowComponent.MoveCSWindow(0, 0);
+                foreach (var acc in Team1.Bots)
+                {
+                    x += 383;
+                    acc.CS2Client.CS2_WindowComponent.MoveCSWindow(x, 0);
+                }
+            }
+            x = 0;
+            if (Team2 != null)
+            {
+                Team2.Leader.CS2Client.CS2_WindowComponent.MoveCSWindow(0, 280);
+                foreach (var acc in Team2.Bots)
+                {
+                    x += 383;
+                    acc.CS2Client.CS2_WindowComponent.MoveCSWindow(x, 280);
+                }
+            }
+            if (Team1 != null || Team2 != null)
+            {
+                return; 
+            }
             foreach (var account in AccountManager.AccountList.Where(acc => acc.AccountStatus == Instances.EAccountStatus.InMainMenu))
             {
                 if (Win32.GetWindowRect(account.CS2Client.CS2_WindowComponent.GetWindowHandle(), out Utils.RECT rect))
@@ -304,17 +314,162 @@ namespace _7VBPanel
         {
 
         }
-
-        private void VendorIDTextBox_Text_Changed(object sender, RoutedEventArgs e)
+        private void ButtonWIthTextOnly_DisbanLobbies(object sender, RoutedEventArgs e)
         {
-            SettingsManager.VendorID = VendorIDTextBox.Text;
-            SettingsManager.SaveSettings();
+            ButtonWIthTextOnly button = (sender as ButtonWIthTextOnly);
+            string OldText = button.ButtonText;
+            button.IsEnabled = false;
+            new Thread(() => {
+                for (int i = 2; i >= 0; i--)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        button.ButtonText = i.ToString();
+                    });
+
+                    Thread.Sleep(1000);
+                }
+                Dispatcher.Invoke(() =>
+                {
+                    button.ButtonText = "Disban lobbies...";
+                });
+
+                if (Team1 != null)
+                {
+                    Team1.DisbanLobbies();
+                }
+                if (Team2 != null)
+                {
+                    Team2.DisbanLobbies();
+                }
+                Dispatcher.Invoke(() =>
+                {
+                    button.ButtonText = OldText;
+                    button.IsEnabled = true;
+                });
+
+            }).Start();
+            
+           
+        }
+        private void ButtonWIthTextOnly_CollectLobbies(object sender, RoutedEventArgs e)
+        {
+            ButtonWIthTextOnly button = (sender as ButtonWIthTextOnly);
+            string OldText = button.ButtonText;
+            button.IsEnabled = false;
+            new Thread(() => {
+                for (int i = 5; i >= 0; i--)
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        button.ButtonText = i.ToString();
+                    });
+                   
+                    Thread.Sleep(1000);
+                }
+                Dispatcher.Invoke(() =>
+                {
+                    button.ButtonText = "Collecting...";
+                });
+               
+                if (Team1 != null)
+                {
+                    Team1.CollectLobbies();
+                }
+                if (Team2 != null)
+                {
+                    Team2.CollectLobbies();
+                }
+                Dispatcher.Invoke(() =>
+                {
+                    button.ButtonText = OldText;
+                    button.IsEnabled = true;
+                });
+               
+            }).Start();
+
+          
+           
+        }
+        private void ButtonWIthTextOnly_ButtonClick_4(object sender, RoutedEventArgs e)
+        {
+            List<AccountInstance> Accounts = AccountManager.GetSelectedAccounts(AccountListBox);
+
+            if (!(Accounts.Count == 2 || Accounts.Count == 4 || Accounts.Count == 5 || Accounts.Count == 10))
+            {
+                MessageBox.Show("You need 2,4,5 or 10 accounts.");
+                return;
+            }
+
+            Accounts.Shuffle();
+
+            if (Accounts.Count == 2 || Accounts.Count == 5)
+            {
+                Team1 = new LobbyInstance(Accounts[0], Accounts.GetRange(1, Accounts.Count - 1));
+                Team2 = null;
+                Lobby1LeaderLabel.Content = Team1.Leader.Login;
+                Lobby1LeaderLabel.Visibility = Visibility.Visible;
+
+                Lobby1BotsListBox.Items.Clear();
+                foreach (var bot in Team1.Bots)
+                {
+                    Label accountlabel = new Label();
+                    accountlabel.Padding = new Thickness(0, 0, 0, 0);
+                    accountlabel.Foreground = Brushes.Green;
+                    accountlabel.Content = $"{bot.Login}";
+                    Lobby1BotsListBox.Items.Add(accountlabel);
+                }
+
+                Lobby2LeaderLabel.Visibility = Visibility.Hidden;
+                Lobby2BotsListBox.Items.Clear();
+            }
+            else
+            {
+                int halfSize = Accounts.Count / 2;
+
+                 Team1 = new LobbyInstance(Accounts[0], Accounts.GetRange(1, halfSize - 1));
+                 Team2 = new LobbyInstance(Accounts[halfSize], Accounts.GetRange(halfSize + 1, Accounts.Count - halfSize - 1));
+
+                Lobby1LeaderLabel.Content = Team1.Leader.Login;
+                Lobby1LeaderLabel.Visibility = Visibility.Visible;
+                Lobby1BotsListBox.Items.Clear();
+                foreach (var bot in Team1.Bots)
+                {
+                    Label accountlabel = new Label();
+                    accountlabel.Padding = new Thickness(0, 0, 0, 0);
+                    accountlabel.Foreground = Brushes.Green;
+                    accountlabel.Content = $"{bot.Login}";
+                    Lobby1BotsListBox.Items.Add(accountlabel);
+                }
+
+                Lobby2LeaderLabel.Content = Team2.Leader.Login;
+                Lobby2LeaderLabel.Visibility = Visibility.Visible;
+                Lobby2BotsListBox.Items.Clear();
+                foreach (var bot in Team2.Bots)
+                {
+                    Label accountlabel = new Label();
+                    accountlabel.Padding = new Thickness(0, 0, 0, 0);
+                    accountlabel.Foreground = Brushes.Green;
+                    accountlabel.Content = $"{bot.Login}";
+                    Lobby2BotsListBox.Items.Add(accountlabel);
+                }
+            }
+
         }
 
-        private void DeviceIDTextBox_Text_Changed(object sender, RoutedEventArgs e)
+        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            SettingsManager.DeviceID = DeviceIDTextBox.Text;
-            SettingsManager.SaveSettings();
+            System.Diagnostics.Process.Start("https://7vb.store/");
+        }
+
+        private void Image_MouseLeftButtonDown_1(object sender, MouseButtonEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://t.me/EclipseFarm");
+        }
+
+        private void Image_MouseLeftButtonDown_2(object sender, MouseButtonEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://discord.com/invite/UGYp4zZ9Ks");
         }
     }
 }

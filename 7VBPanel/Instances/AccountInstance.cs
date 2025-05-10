@@ -62,7 +62,7 @@ namespace _7VBPanel.Instances
                 }
                 Thread.Sleep(500);
             }
-            ProcessesUtils.WaitForLoadCS2(CS2Process.Id);
+            Thread.Sleep(10000);
             CS2Client.CS2Process = CS2Process;
             while(CS2Process.MainWindowHandle == IntPtr.Zero)
             {

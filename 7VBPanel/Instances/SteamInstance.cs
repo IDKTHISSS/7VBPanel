@@ -25,15 +25,15 @@ namespace _7VBPanel.Instances
         }
         public void Start()
         {
+            accountInstance.SetAccountColor(Brushes.Yellow);
             CS2Optimizer.ConfigureAllFiles((accountInstance.MaFile.Session.SteamID - 76561197960265728).ToString(), SettingsManager.SteamPath, SettingsManager.CS2Path, accountInstance.Login);
             SteamProcess = new Process();
             ProcessStartInfo processStartInfo = new ProcessStartInfo
             {
                 FileName = $"{SettingsManager.SteamPath}" + $"\\steam.exe",
-                Arguments = $"-silent -login -nofriendsui -vgui -master_ipc_name_override {accountInstance.Login} -noverifyfiles -nobootstrapupdate -skipinitialbootstrap -norepairfiles -overridepackageurl -disable-winh264 -language english -applaunch 730 -con_logfile {accountInstance.Login}.log -exec boost.cfg -allowmultiple " + SettingsManager.CS2Arguments,
+                Arguments = $"-silent -login -nofriendsui -vgui -master_ipc_name_override {accountInstance.Login} -noverifyfiles -nobootstrapupdate -skipinitialbootstrap -norepairfiles -overridepackageurl -disable-winh264 -language english -applaunch 730 -noborder -con_logfile {accountInstance.Login}.log -exec boost.cfg " + SettingsManager.CS2Arguments,
                 UseShellExecute = false
             };
-            processStartInfo.Environment["VPROJECT"] = "whatever";
             SteamProcess.StartInfo = processStartInfo;
             SteamProcess.Exited += delegate
             {
@@ -42,15 +42,13 @@ namespace _7VBPanel.Instances
             };
             SteamProcess.EnableRaisingEvents = true;
             SteamProcess.Start();
-            accountInstance.SetAccountColor(Brushes.Yellow);
+            
             Thread.Sleep(5000);
             SteamUtils.LoginInSteamWindowFlaUIMethod(SteamProcess.Id, accountInstance);
             accountInstance.AccountStatus = EAccountStatus.WaitCS2;
             new Thread(() =>
             {
                 accountInstance.FindCS2();
-                accountInstance.CS2Client.ConsoleCompnent.Setup(accountInstance);
-                accountInstance.CS2Client.ConsoleCompnent.StartReadingConsole();
                 accountInstance.CS2Client.CS2_WindowComponent.ChangeWindowTitle("[7VB] " + accountInstance.Login);
                 accountInstance.AccountStatus = EAccountStatus.InMainMenu;
                 accountInstance.SetAccountColor(Brushes.Green);

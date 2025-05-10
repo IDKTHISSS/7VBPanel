@@ -23,8 +23,6 @@ namespace _7VBPanel.Managers
         {
             { nameof(CS2Path), "None" },
             { nameof(SteamPath), "None" },
-            { nameof(VendorID), "0" },
-            { nameof(DeviceID), "0" },
             { nameof(CS2Arguments), "-high -nohltv -nojoy -nosound -noaafonts -noaafonts2 -noipx -noubershader -nod3d9ex -novid -cl_forcepreload 1 +violence_hblood 0 +sethdmodels 0 +r_dynamic 0 +cl_disablehtmlmotd 1 +mat_disable_fancy_blending 1" }
         };
 
@@ -120,8 +118,11 @@ namespace _7VBPanel.Managers
            
             string vendorIDPattern = @"""VendorID""\s*""[^""]*""";
             string deviceIDPattern = @"""DeviceID""\s*""[^""]*""";
-            string updatedConfig = Regex.Replace(string.Join(Environment.NewLine, lines), vendorIDPattern, $@"""VendorID""    ""{VendorID.ToString()}""");
-            updatedConfig = Regex.Replace(updatedConfig, deviceIDPattern, $@"""DeviceID""    ""{DeviceID.ToString()}""");
+            int vendorID = 0;
+            int deviceID = 0;
+            HardwareUtils.GetVendorAndDeviceID(out vendorID, out deviceID);
+            string updatedConfig = Regex.Replace(string.Join(Environment.NewLine, lines), vendorIDPattern, $@"""VendorID""    ""{vendorID.ToString()}""");
+            updatedConfig = Regex.Replace(updatedConfig, deviceIDPattern, $@"""DeviceID""    ""{deviceID.ToString()}""");
             return updatedConfig;
         }
 
@@ -138,8 +139,6 @@ namespace _7VBPanel.Managers
 
         public static string CS2Path { get; set; }
         public static string SteamPath { get; set; }
-        public static string VendorID { get; set; }
-        public static string DeviceID { get; set; }
         public static string CS2Arguments { get; set; }
 
 

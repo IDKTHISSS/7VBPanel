@@ -6,7 +6,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{EEF733E7-4D8B-440E-8184-FBDC6A77236C}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>_7VBPanel</RootNamespace>
     <AssemblyName>7VBPanel</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -42,6 +42,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Icons\ProgramIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Costura, Version=5.7.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -251,16 +254,19 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsInput, Version=1.0.4.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL">
+      <HintPath>..\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Components\CS2CmdComponent.cs" />
     <Compile Include="Components\CS2WindowComponent.cs" />
     <Compile Include="Instances\AccountInstance.cs" />
     <Compile Include="Instances\CS2Instance.cs" />
+    <Compile Include="Instances\LobbyInstance.cs" />
     <Compile Include="Instances\SteamInstance.cs" />
     <Compile Include="Managers\AccountManager.cs" />
     <Compile Include="Resources\Files.Designer.cs">
@@ -272,6 +278,7 @@
     <Compile Include="Utils\CS2Optimizer.cs" />
     <Compile Include="Utils\HardwareUtils.cs" />
     <Compile Include="Utils\ProcessesUtils.cs" />
+    <Compile Include="Utils\SmallUtils.cs" />
     <Compile Include="Utils\SteamUtils.cs" />
     <Compile Include="Utils\Win32.cs" />
     <Page Include="UI\Windows\MainWindow.xaml">
@@ -381,6 +388,17 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\7VBIcon.jpg" />
+    <Resource Include="Resources\Icons\Discord.png" />
+    <Resource Include="Resources\Icons\Logo.jpg" />
+    <Resource Include="Resources\Icons\ProgramIcon.ico" />
+    <Resource Include="Resources\Icons\Telegram.png" />
+    <Resource Include="Resources\Icons\WebSite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\Logo2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Interop.UIAutomationClient.10.19041.0\build\Interop.UIAutomationClient.targets" Condition="Exists('..\packages\Interop.UIAutomationClient.10.19041.0\build\Interop.UIAutomationClient.targets')" />

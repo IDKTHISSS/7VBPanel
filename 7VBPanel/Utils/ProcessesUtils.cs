@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _7VBPanel.Instances;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -59,37 +60,6 @@ namespace _7VBPanel.Utils
             return dlls;
         }
 
-        public static void WaitForLoadCS2(int CS2Pid)
-        {
-            var knownDlls = GetLoadedDlls(CS2Pid);
-            foreach (var dll in knownDlls)
-            {
-                if (dll.Equals("propsys.dll", StringComparison.OrdinalIgnoreCase))
-                {
-                    Console.WriteLine($"{CS2Pid} - {dll}");
-                    return;
-                }
-            }
-            while (true)
-            {
-                Thread.Sleep(200);
-                var currentDlls = GetLoadedDlls(CS2Pid);
-                var newDlls = currentDlls.Except(knownDlls).ToList();
-
-                if (newDlls.Count > 0)
-                {
-                    foreach (var dll in newDlls)
-                    {
-                        if (dll.Equals("propsys.dll", StringComparison.OrdinalIgnoreCase))
-                        {
-                            Thread.Sleep(3000);
-                            return;
-                        }
-                    }
-                    knownDlls = currentDlls.ToHashSet();
-                }
-            }
-        }
         public static Process GetParentProcess(Process process)
         {
             try

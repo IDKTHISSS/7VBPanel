@@ -69,10 +69,6 @@ namespace _7VBPanel.Utils
             File.WriteAllText(cs2_path + "\\game\\csgo\\cfg\\boost.cfg", SettingsManager.GetAutoExecFileSettings());
             try
             {
-                if (File.Exists(steam_path + "\\steam.exe") && !File.Exists(steam_path + "\\steam_" + steam_id_32 + ".exe"))
-                {
-                    File.Copy(steam_path + "\\steam.exe", steam_path + "\\steam_" + steam_id_32 + ".exe");
-                }
                 Directory.CreateDirectory(steam_path + "\\userdata");
                 Directory.CreateDirectory(steam_path + "\\userdata\\" + steam_id_32);
                 Directory.CreateDirectory(steam_path + "\\userdata\\" + steam_id_32 + "\\730");

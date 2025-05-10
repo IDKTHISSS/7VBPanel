@@ -70,6 +70,27 @@ namespace _7VBPanel.Utils
             }
             throw new InvalidOperationException("Unable to get window border size.");
         }
+
+        private const uint SMTO_ABORTIFHUNG = 0x0002;
+        private const uint WM_NULL = 0x0000;
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr SendMessageTimeout(
+            IntPtr hWnd,
+            uint Msg,
+            IntPtr wParam,
+            IntPtr lParam,
+            uint fuFlags,
+            uint uTimeout,
+            out IntPtr lpdwResult);
+
+        public static bool IsWindowLagging(IntPtr hWnd)
+        {
+            IntPtr result;
+            IntPtr response = SendMessageTimeout(hWnd, WM_NULL, IntPtr.Zero, IntPtr.Zero, SMTO_ABORTIFHUNG, 100, out result);
+
+            return response == IntPtr.Zero; // If no response, the window is lagging
+        }
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern bool SetWindowText(IntPtr hWnd, string lpString);
         [DllImport("user32.dll", SetLastError = true)]
@@ -91,7 +112,8 @@ namespace _7VBPanel.Utils
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
-
+        [DllImport("user32.dll")]
+        public static extern bool IsHungAppWindow(IntPtr hWnd);
         [DllImport("user32.dll")]
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
         [DllImport("dwmapi.dll")]
